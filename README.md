@@ -13,8 +13,8 @@ This project is a simple HTTP proxy server using Node.js, Express, and the `http
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/4RM4C4/your_repository.git
-    cd your_repository
+    git clone https://github.com/4RM4C4/Hostname-Redirect-Proxy.git
+    cd Hostname-Redirect-Proxy
     ```
 
 2. **Install dependencies:**
