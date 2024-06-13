@@ -40,8 +40,8 @@ This project is a simple HTTP proxy server using Node.js, Express, and the `http
     ```
 
 2. **Make requests:**
-    - Requests to `example.com` will be redirected to port `3001`.
-    - Requests to `another-example.com` will be redirected to port `3002`.
+    - Requests to `example.com` will be redirected to port `3123`.
+    - Requests to `another-example.com` will be redirected to port `4324`.
 
 ## Project Structure
 
