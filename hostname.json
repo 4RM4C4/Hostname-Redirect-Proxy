@@ -1,5 +1,4 @@
 {
-  "url1.com": 3456,
-  "url2.org": 4567,
-  "url3.com.ar": 5678
+  "example.com": { "port": 3456, "status": "online" },
+  "another-example.com": { "port": 4567, "status": "offline" }
 }

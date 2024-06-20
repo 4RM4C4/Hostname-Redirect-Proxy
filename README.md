@@ -1,13 +1,12 @@
-# HTTP Proxy Server with Express and http-proxy
+# HTTP Proxy Server with Express and http-proxy-middleware
 
-This project is a simple HTTP proxy server using Node.js, Express, and the `http-proxy` library. It redirects incoming requests to different ports based on the hostname.
+This project is a simple HTTP proxy server using Node.js, Express, and the `http-proxy-middleware` library. It redirects incoming requests to different ports based on the hostname.
 
 ## Features
 
 - **Hostname-based redirection:** Uses a JSON file to map hostnames to specific ports.
 - **CORS support:** Cross-Origin Resource Sharing (CORS) support.
-- **Request logging:** Logs all incoming requests.
-- **Error handling:** Clear error responses for misdirected requests and internal server errors.
+- **Server status control:** Easily put a server in an `offline` state to stop redirecting requests.
 
 ## Installation
 
@@ -26,8 +25,8 @@ This project is a simple HTTP proxy server using Node.js, Express, and the `http
     Create a `hostname.json` file in the root directory of the project with the following format:
     ```json
     {
-      "example.com": 3123,
-      "another-example.com": 4324
+      "example.com": { "port": 3456, "status": "online" },
+      "another-example.com": { "port": 4567, "status": "offline" }
     }
     ```
     Adjust the hostnames and ports according to your needs.
@@ -40,15 +39,15 @@ This project is a simple HTTP proxy server using Node.js, Express, and the `http
     ```
 
 2. **Make requests:**
-    - Requests to `example.com` will be redirected to port `3123`.
-    - Requests to `another-example.com` will be redirected to port `4324`.
+    - Requests to `example.com` will be redirected to port `3456`.
+    - Requests to `another-example.com` will be discarded because the status is `offline`.
+    - You can update the `hostname.json` file to change the status of a server to `online` or `offline`.
 
 ## Project Structure
 
 ```plaintext
 ├── utils
-│   ├── logger.js          # Logging requests
-│   ├── middleware.js      # Custom middleware
+│   ├── config.js          # Config file
 ├── hostname.json          # Configuration file for hostname-based redirection
 ├── app.js                 # Main application file
 ├── package.json           # npm configuration file
