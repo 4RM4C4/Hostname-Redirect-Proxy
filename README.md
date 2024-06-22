@@ -1,12 +1,12 @@
 # HTTP Proxy Server with Express and http-proxy-middleware
 
-This project is a simple HTTP proxy server using Node.js, Express, and the `http-proxy-middleware` library. It redirects incoming requests to different ports based on the hostname.
+This project is a simple HTTP proxy server using Node.js, Express, and the http-proxy-middleware library. It redirects incoming requests to different ports based on the hostname and caches database requests for improved performance.
 
 ## Features
 
 - **Hostname-based redirection:** Uses a JSON file to map hostnames to specific ports.
-- **CORS support:** Cross-Origin Resource Sharing (CORS) support.
-- **Server status control:** Easily put a server in an `offline` state to stop redirecting requests.
+- **Server status control:** Easily put a server in an `offline` status directly from the database.
+- **Caching:** Database requests are cached for 10 seconds to reduce load and improve response times.
 
 ## Installation
 
@@ -21,13 +21,23 @@ This project is a simple HTTP proxy server using Node.js, Express, and the `http
     npm install
     ```
 
-3. **Configure the hostname.json file:**
-    Create a `hostname.json` file in the root directory of the project with the following format:
-    ```json
-    {
-      "example.com": { "port": 3456, "status": "online" },
-      "another-example.com": { "port": 4567, "status": "offline" }
-    }
+3. **Set up environment variables:**
+    Create a .env file in the root directory of the project with the following content:
+    ```dotenv
+    PORT=12345
+    DATABASE_URL=mariadb://username:password@host:port/database_name
+    ```
+
+4. **Set up the database:**
+    Create a MariaDB database and a table for URL configurations.
+    Use the following schema for the urls table:
+    ```sql
+    CREATE TABLE urls (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       hostname VARCHAR(255) NOT NULL UNIQUE,
+       port INT NOT NULL,
+       status BOOLEAN NOT NULL
+    );
     ```
     Adjust the hostnames and ports according to your needs.
 
@@ -39,16 +49,20 @@ This project is a simple HTTP proxy server using Node.js, Express, and the `http
     ```
 
 2. **Make requests:**
-    - Requests to `example.com` will be redirected to port `3456`.
-    - Requests to `another-example.com` will be discarded because the status is `offline`.
-    - You can update the `hostname.json` file to change the status of a server to `online` or `offline`.
+    - Requests to configured hostnames will be redirected to their respective ports.
+    - If a server is set to `offline`, requests will receive a `503 Service Unavailable` response.
+    - The database query results are cached for 10 seconds to improve performance for repeated requests.
 
 ## Project Structure
 
 ```plaintext
+├── config
+│   ├── database.js        # Database connection configuration
+├── models
+│   ├── url.js             # URL model definition
 ├── utils
-│   ├── config.js          # Config file
-├── hostname.json          # Configuration file for hostname-based redirection
+│   ├── config.js          # Configuration file for environment variables and HTTPS credentials
+│   ├── logger.js          # Logger utility
 ├── app.js                 # Main application file
 ├── package.json           # npm configuration file
 └── README.md              # This file
