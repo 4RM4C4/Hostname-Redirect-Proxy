@@ -1,4 +1,0 @@
-{
-  "example.com": { "port": 3456, "status": "online" },
-  "another-example.com": { "port": 4567, "status": "offline" }
-}
